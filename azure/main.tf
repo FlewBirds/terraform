@@ -22,11 +22,11 @@ resource "azurerm_resource_group" "eagle_tf_rg" {
   location = var.rg_location
 }
 
-resource "azurerm_storage_account" "eagle_rf_stac" {
- name = "eagle_rf_stac"
+resource "azurerm_storage_account" "eaglerfstac" {
+ name = "eaglerfstac"
  resource_group_name = azurerm_resource_group.eagle_tf_rg.name
  location = azurerm_resource_group.eagle_tf_rg.location
- account_tieraccount_tier = "Standard"
+ account_tier = "Standard"
  account_replication_type = "LRS"
 }
 
@@ -49,6 +49,7 @@ resource "azurerm_network_interface" "eagle_tf_nic_internal" {
   name     = "eagle_tf_nic_internal_${count.index}"
   location = azurerm_resource_group.eagle_tf_rg.location
   resource_group_name = azurerm_resource_group.eagle_tf_rg.name
+  enable_accelerated_networking = var.env_vm_size["Dev"].enable_accelerated_networking
 
   ip_configuration {
     name                          = "eagle_tf_nic_internal"
@@ -63,13 +64,14 @@ resource "azurerm_windows_virtual_machine" "vmnames" {
   name                = "eagle-${var.vm_names[count.index]}"
   resource_group_name = azurerm_resource_group.eagle_tf_rg.name
   location            = azurerm_resource_group.eagle_tf_rg.location
-  size                = var.env_vm_size
+  size                = var.env_vm_size["Dev"].size
   admin_username      = "adminuser"
   admin_password      = "P@$$w0rd1234!"
-#   boot_diagnostics {
-#     enabled = true
-#     #storage_uri = azurerm_storage_account.eagle_rf_stac
-#   }
+  #enable_boot_diagnostics = var.env_vm_size["Dev"].enable_boot_diagnostics
+  #  boot_diagnostics {
+  #    enabled = var.env_vm_size["Dev"].enable_boot_diagnostics
+  #    storage_uri = azurerm_storage_account.eaglerfstac
+  #  }
 
   network_interface_ids = [
     #azurerm_network_interface.eagle_tf_nic_internal.id

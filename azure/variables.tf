@@ -26,19 +26,23 @@ variable "deploy_env" {
 }
 
 variable "env_vm_size" {
-  type = map(object({vm_type=string}))
+  type = map(object({size=string, enable_accelerated_networking=bool}))
   default = {
     "Dev" = {
-      vm_type = "Standard_B2ms"
+      size = "Standard_B2ms"
+      enable_accelerated_networking = false
     },
     "QA" = {
-      vm_type = "Standard_D2s_v3"
+      size = "Standard_D2s_v3"
+      enable_accelerated_networking = false
     },
       "Stage" = {
-      vm_type = "Standard_D2as_v4"
+      size = "Standard_D2as_v4"
+      enable_accelerated_networking = false
     },
     "PROD" = {
-      vm_type = "Standard_DS2_v2"
+      size = "Standard_DS2_v2"
+      enable_accelerated_networking = true
     }
   }
   
