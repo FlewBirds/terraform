@@ -1,0 +1,5 @@
+azure/.terraform/
+azure/terraform.tfstate
+azure/*.plan
+azure/.terraform.lock.hcl
+azure/terraform.tfstate.backup
