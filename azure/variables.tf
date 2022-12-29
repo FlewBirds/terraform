@@ -47,3 +47,18 @@ variable "env_vm_size" {
   }
   
 }
+
+variable "tags" {
+ type = object({
+    Environment = string
+    Owner = string
+    Role_app_type = string
+    Role_app = string
+ })
+  default = {
+    Environment = "Dev"
+    Owner = "Operations_team"
+    Role_app_type = "nodejs"
+    Role_app = "app_vm"
+  }
+}

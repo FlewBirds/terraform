@@ -1,22 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.37.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
-
-  }
-  subscription_id = "b0dae312-4fd1-4fec-9d45-4e4e767d4652"
-
-}
-
-
-
 resource "azurerm_resource_group" "eagle_tf_rg" {
   name     = var.rg_name
   location = var.rg_location
@@ -92,9 +73,7 @@ resource "azurerm_windows_virtual_machine" "vmnames" {
  depends_on = [
     azurerm_network_interface.eagle_tf_nic_internal
   ]
-  tags = {
-    Environment = var.deploy_env[0]
-  }
+  tags = var.tags
 }
 
 
