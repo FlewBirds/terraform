@@ -6,7 +6,7 @@ Terraform Datatypes
 
 string: alphanumeric, special characters
 bool: ture / flase
-number: numbers
+number: numbers, fractions
 
 
 Collection types:
@@ -54,3 +54,6 @@ split (":","one:two:three")
 
 join (":",["one","two","three"])
 data.aws_availability_zones.available.names
+
+
+eagle-apple_OsDisk_1_13e422955d014ea0b2c4b193768bac17

@@ -6,12 +6,13 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name = "fb-rg"
+    resource_group_name  = "fb-rg"
     storage_account_name = "fbtfstate"
-    container_name = "tfstate"
-    key = "statefile/terraform.tfstate"
+    container_name       = "tfstate"
+    key                  = "statefile/terraform.tfstate"
   }
 }
+
 # Requirements for Backend State
 #Storage Account Name:
 #key: path to the statefile
