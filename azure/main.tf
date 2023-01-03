@@ -23,13 +23,18 @@ resource "azurerm_storage_account" "eaglerfstac" {
   
 resource "azurerm_virtual_network" "eagle_tf_vnet" {
   count               = length(var.deploy_env)
+  #for_each = var.address_space_vnet_map
   name                = "eagle_tf_vnet_${var.deploy_env[count.index]}"
+  #name = "eagle_tf_vnet_${each.key}"
   location            = azurerm_resource_group.eagle_tf_rg.location
   resource_group_name = azurerm_resource_group.eagle_tf_rg.name
   #address_space       = var.address_space_vnet[var.deploy_env[*]]
   # address_space       = ["10.1.0.0/16"]
-  address_space = [var.address_space_vnet[count.index]]
+  #address_space = [var.address_space_vnet[count.index]]
     #address_space = address_space_vnet_map
+  #address_space = "${lookup(var.address_space_vnet_map, element(var.deploy_env, count.index))}"
+  address_space = ["${lookup(var.address_space_vnet_map, element(var.deploy_env, count.index))}"]
+  #address_space = lookup(var.address_space_vnet_map, var.deploy_env)
 }
 
 resource "azurerm_subnet" "eagle_tf_pub_subnet" {

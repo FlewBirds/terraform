@@ -36,6 +36,11 @@ variable "address_space_vnet" {
 
 }
 
+variable "deploy_env" {
+  type    = list(string)
+  default = ["Dev", "QA"]
+}
+
 variable "address_space_vnet_map" {
 
   # type = list(string)
@@ -43,14 +48,10 @@ variable "address_space_vnet_map" {
   # default = ["10.1.0.0/16", "10.2.0.0/16"]
 
    type = map
-
     default = {
-     "Dev" = "10.1.0.0/16"
-     "QA"  = "10.2.0.0/16"
+     Dev = "10.1.0.0/16"
+     QA  = "10.2.0.0/16"
      }
-
-
-
 }
 
 
@@ -74,11 +75,6 @@ variable "address_space_vnet_map" {
 #     },
 #   }
 # }
-
-variable "deploy_env" {
-  type    = list(string)
-  default = ["Dev", "QA"]
-}
 
 variable "env_vm_size" {
   type = map(object({ size = string, enable_accelerated_networking = bool }))
