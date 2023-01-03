@@ -17,17 +17,44 @@ variable "rg_location" {
 
 variable "vm_names" {
   type = list(string)
-  #default = ["APPLE", "banana", "Goa"]
-  default = ["APPLE"]
+  default = ["APPLE", "banana", "Goa"]
+  #default = ["APPLE"]
 }
 
 variable "address_space_vnet" {
 
   type = list(string)
 
-  default = ["10.1.0.0/16", "10.2.0.0/16", "10.3.0.0/16", "10.4.0.0/16"]
+  default = ["10.1.0.0/16", "10.2.0.0/16"]
+
+  #type = map
+
+  #  default = {
+  #   "Dev" = "10.1.0.0/16"
+  #   "QA"  = "10.2.0.0/16"
+  #   }
 
 }
+
+variable "address_space_vnet_map" {
+
+  # type = list(string)
+
+  # default = ["10.1.0.0/16", "10.2.0.0/16"]
+
+   type = map
+
+    default = {
+     "Dev" = "10.1.0.0/16"
+     "QA"  = "10.2.0.0/16"
+     }
+
+
+
+}
+
+
+
 
 # variable "address_space_vnet" {
 #   #default = ["", "10.2.0.0/16", "10.3.0.0/16", "10.4.0.0/16" ]
@@ -50,7 +77,7 @@ variable "address_space_vnet" {
 
 variable "deploy_env" {
   type    = list(string)
-  default = ["Dev", "QA", "Stage", "PROD"]
+  default = ["Dev", "QA"]
 }
 
 variable "env_vm_size" {

@@ -5,6 +5,7 @@ locals {
     billing_code = var.billingcode
   }
   name_prefix = "${var.naming_prefix}-dev"
+  #env = "Dev"
 }
 
 resource "azurerm_resource_group" "eagle_tf_rg" {
@@ -19,7 +20,7 @@ resource "azurerm_storage_account" "eaglerfstac" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
-
+  
 resource "azurerm_virtual_network" "eagle_tf_vnet" {
   count               = length(var.deploy_env)
   name                = "eagle_tf_vnet_${var.deploy_env[count.index]}"
@@ -28,6 +29,7 @@ resource "azurerm_virtual_network" "eagle_tf_vnet" {
   #address_space       = var.address_space_vnet[var.deploy_env[*]]
   # address_space       = ["10.1.0.0/16"]
   address_space = [var.address_space_vnet[count.index]]
+    #address_space = address_space_vnet_map
 }
 
 resource "azurerm_subnet" "eagle_tf_pub_subnet" {
@@ -36,19 +38,31 @@ resource "azurerm_subnet" "eagle_tf_pub_subnet" {
   resource_group_name  = azurerm_resource_group.eagle_tf_rg.name
   address_prefixes     = ["10.1.1.0/24"]
 }
-
+resource "azurerm_public_ip" "vm_public_ip" {
+  count = length(var.vm_names)
+  name                = "vm_public_ip_${var.vm_names[count.index]}"
+  resource_group_name = azurerm_resource_group.eagle_tf_rg.name
+  location            = azurerm_resource_group.eagle_tf_rg.location
+  allocation_method   = "Dynamic"
+}
 resource "azurerm_network_interface" "eagle_tf_nic_internal" {
+
   count                         = length(var.vm_names)
-  name                          = "eagle_tf_nic_internal_${count.index}"
+  name                          = "eagle_tf_nic_internal_${var.vm_names[count.index]}"
   location                      = azurerm_resource_group.eagle_tf_rg.location
   resource_group_name           = azurerm_resource_group.eagle_tf_rg.name
   enable_accelerated_networking = var.env_vm_size["Dev"].enable_accelerated_networking
 
   ip_configuration {
+    #count         = length(var.vm_names)
     name                          = "eagle_tf_nic_internal"
     subnet_id                     = azurerm_subnet.eagle_tf_pub_subnet.id
     private_ip_address_allocation = "Dynamic"
+    # public_ip_address_id = [azurerm_public_ip.vm_public_ip[var.vm_names[count.index]]]
   }
+depends_on = [
+  azurerm_public_ip.vm_public_ip
+]
 }
 
 resource "azurerm_windows_virtual_machine" "vmnames" {
