@@ -17,8 +17,8 @@ variable "rg_location" {
 
 variable "vm_names" {
   type = list(string)
-  default = ["APPLE", "banana", "Goa"]
-  #default = ["APPLE"]
+  #default = ["APPLE", "banana", "Goa"]
+  default = ["APPLE"]
 }
 
 variable "address_space_vnet" {
@@ -38,7 +38,7 @@ variable "address_space_vnet" {
 
 variable "deploy_env" {
   type    = list(string)
-  default = ["Dev", "QA"]
+  default = ["Dev", "QA", "UAT", "PROD"]
 }
 
 variable "address_space_vnet_map" {
@@ -51,9 +51,19 @@ variable "address_space_vnet_map" {
     default = {
      Dev = "10.1.0.0/16"
      QA  = "10.2.0.0/16"
+     UAT = "10.3.0.0/16"
+     PROD = "10.4.0.0/16"
      }
 }
 
+variable "admin_user" {
+  type = string
+  default = "adminuser"
+}
+variable "admin_password" {
+  type = string
+  sensitive = true
+}
 
 
 
@@ -143,4 +153,3 @@ variable "project" {
   type    = string
   default = "projectfb"
 }
-
